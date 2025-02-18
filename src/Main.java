@@ -4,6 +4,7 @@
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
@@ -79,6 +80,36 @@ public class Main {
         return result;
     }
 
+    public static void calculateAndSaveGamesPerCity(List<Eveniment> evenimente) {
+        Map<String, Integer> result = new HashMap<>();
+
+        // Count games per city
+        for (Eveniment Eveniment : evenimente) {
+            String kat = Eveniment.getKonfrontationsTyp();
+            result.put(kat, result.getOrDefault(kat, 0) + 1);
+        }
+
+        // Sort by number of games (descending) and then by city name (ascending)
+        List<Map.Entry<String, Integer>> sortedEntries = new ArrayList<>(result.entrySet());
+        sortedEntries.sort((e1, e2) -> {
+            int compare = e2.getValue().compareTo(e1.getValue()); // Descending by count
+            if (compare == 0) {
+                return e1.getKey().compareTo(e2.getKey()); // Ascending by city name
+            }
+            return compare;
+        });
+
+        // Save to file
+        try (FileWriter writer = new FileWriter("bericht_konfrontationen.txt")) {
+            for (Map.Entry<String, Integer> entry : sortedEntries) {
+                writer.write(entry.getKey() + "$" + entry.getValue() + "\n");
+            }
+            System.out.println("Results saved to bericht_konfrontationen.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public static void main(String[] args) {
         String filePath = "E:\\Sem3\\MAP\\RESRusuVictor723Aufgabe1\\src\\marvel_konfrontationen.tsv";
         List<Eveniment> evenimente = readEvenimentFromTSV(filePath);
@@ -97,8 +128,8 @@ public class Main {
         for (String s : filteredEventsAfterKT) {
             System.out.println(s);
         }
-
-
+        
+        calculateAndSaveGamesPerCity(evenimente);
 
 
 
