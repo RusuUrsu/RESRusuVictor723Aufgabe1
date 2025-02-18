@@ -17,6 +17,19 @@ public class Eveniment {
         this.golbalerEingluss = golbalerEingluss;
     }
 
+    @Override
+    public String toString() {
+        return "Eveniment{" +
+                "id=" + id +
+                ", held='" + held + '\'' +
+                ", antagonist='" + antagonist + '\'' +
+                ", konfrontationsTyp='" + konfrontationsTyp + '\'' +
+                ", ort='" + ort + '\'' +
+                ", datum='" + datum + '\'' +
+                ", golbalerEingluss=" + golbalerEingluss +
+                '}';
+    }
+
     public Eveniment() {
 
     }
